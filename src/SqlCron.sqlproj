@@ -60,6 +60,7 @@
     <Folder Include="Properties" />
     <Folder Include="dbo\" />
     <Folder Include="dbo\Functions\" />
+    <Folder Include="dbo\Stored Procedures\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Functions\CronValidate.sql" />
@@ -67,5 +68,12 @@
     <Build Include="dbo\Functions\CronValidateRange.sql" />
     <Build Include="dbo\Functions\CronValidateStep.sql" />
     <Build Include="dbo\Functions\CronWord.sql" />
+    <Build Include="dbo\Stored Procedures\CronValidateTests.sql" />
+    <Build Include="dbo\Stored Procedures\CronValidatePartTests.sql" />
+    <Build Include="dbo\Stored Procedures\CronValidateRangeTests.sql" />
+    <Build Include="dbo\Stored Procedures\CronValidateStepTests.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Script1.sql" />
   </ItemGroup>
 </Project>
