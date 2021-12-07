@@ -1,27 +1,31 @@
 ﻿-- =============================================
--- Author:		Oleksandr Viktor (UkrGuru)
--- Create date: 2021-12-05
--- Samples:
- --SELECT dbo.[CronValidateStep]('MINUTE', '0-5', 0)
- --SELECT dbo.[CronValidateStep]('HOUR', '0-5', 5)
- --SELECT dbo.[CronValidateStep]('DAY', '0-5', 6)
+-- Author: Oleksandr Viktor (UkrGuru)
 -- =============================================
-CREATE FUNCTION [dbo].[CronValidateStep](@Name varchar(10), @Expression varchar(100), @Value int, @Min int, @Max int)
+CREATE FUNCTION [dbo].[CronValidateStep](@PartName varchar(10), @Expression varchar(100), @Value int)
 RETURNS tinyint
 AS
 BEGIN
-    DECLARE @Start int = TRY_CAST(dbo.CronWord(@Expression, '/', 1) as int)
-        ,@Step int = TRY_CAST(dbo.CronWord(@Expression, '/', 2) as int)
+    IF @Expression LIKE '%[^0-9*/]%' OR @Value IS NULL RETURN 0
+
+    DECLARE @Start int = ISNULL(TRY_CAST(dbo.CronWord(@Expression, '-', 1) as int), 0),
+        @Step int = TRY_CAST(dbo.CronWord(@Expression, '-', 2) as int);
 
     IF @Start IS NULL OR @Step IS NULL OR ISNULL(@Step, 0) <= 0 RETURN 0;
 
-    DECLARE @i int = CASE WHEN @Start > @Min THEN @Start ELSE @Min END;
+    DECLARE @Min int, @Max int
+    IF @PartName = 'MINUTE' SELECT @Min = 0, @Max = 59
+    ELSE IF @PartName = 'HOUR' SELECT @Min = 0, @Max = 23
+    ELSE IF @PartName = 'DAY' SELECT @Min = 1, @Max = 31
+    ELSE IF @PartName = 'MONTH' SELECT @Min = 1, @Max = 12
+    ELSE IF @PartName = 'WEEKDAY' SELECT @Min = 1, @Max = 7
+    
+    DECLARE @i int = @Start;
     WHILE @i <= @Max 
     BEGIN
-        IF @i = @Value RETURN 1
+        IF @i = @Value RETURN 1;
             
         SET @i += @Step;
     END
-    
+
     RETURN 0
 END

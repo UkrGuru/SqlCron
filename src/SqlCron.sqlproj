@@ -74,6 +74,6 @@
     <Build Include="dbo\Stored Procedures\CronValidateStepTests.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Script1.sql" />
+    <None Include="Tests.sql" />
   </ItemGroup>
 </Project>

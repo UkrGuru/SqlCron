@@ -1,9 +1,5 @@
-﻿
--- =============================================
--- Author:		Oleksandr Viktor (UkrGuru)
--- Create date: 2021-12-05
--- DECLARE @cron varchar(100) = '1  2  3 4 5';
--- SELECT dbo.CronWord(@cron, ' ', 0)
+﻿-- =============================================
+-- Author: Oleksandr Viktor (UkrGuru)
 -- =============================================
 CREATE FUNCTION [dbo].[CronWord](@Expression varchar(100), @Separator char(1) = ' ', @Index int)
 RETURNS varchar(100)
