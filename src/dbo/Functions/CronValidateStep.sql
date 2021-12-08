@@ -1,6 +1,6 @@
-﻿-- =============================================
--- Author: Oleksandr Viktor (UkrGuru)
--- =============================================
+﻿-- ==============================================================
+-- Copyright (c) Oleksandr Viktor (UkrGuru). All rights reserved.
+-- ==============================================================
 CREATE FUNCTION [dbo].[CronValidateStep](@PartName varchar(10), @Expression varchar(100), @Value int)
 RETURNS tinyint
 AS

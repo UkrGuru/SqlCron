@@ -1,11 +1,11 @@
-﻿-- =============================================
--- Author: Oleksandr Viktor (UkrGuru)
--- =============================================
+﻿-- ==============================================================
+-- Copyright (c) Oleksandr Viktor (UkrGuru). All rights reserved.
+-- ==============================================================
 CREATE FUNCTION [dbo].[CronValidateRange](@PartName varchar(10), @Expression varchar(100), @Value int)
 RETURNS tinyint
 AS
 BEGIN
-    IF @Expression LIKE '%[^0-9-/]%' OR @Value IS NULL RETURN 0
+    IF @Expression LIKE '%[^0-9*-/]%' OR @Value IS NULL RETURN 0
 
     DECLARE @Min int, @Max int;
     IF @PartName = 'MINUTE' SELECT @Min = 0, @Max = 59

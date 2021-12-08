@@ -1,6 +1,6 @@
-﻿-- =============================================
--- Author: Oleksandr Viktor (UkrGuru)
--- =============================================
+﻿-- ==============================================================
+-- Copyright (c) Oleksandr Viktor (UkrGuru). All rights reserved.
+-- ==============================================================
 CREATE FUNCTION [dbo].[CronWord](@Expression varchar(100), @Separator char(1) = ' ', @Index int)
 RETURNS varchar(100)
 AS
@@ -13,4 +13,3 @@ BEGIN
 
     RETURN CASE WHEN @i < @Index THEN NULL ELSE @v END
 END
-
