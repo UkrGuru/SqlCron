@@ -13,6 +13,6 @@ IF dbo.CronValidate('0,5/5 * * * *', '00:10') = 1 SET @Count += 1 ELSE SET @ErrM
 IF dbo.CronValidate('0,5-10 * * * *', '00:10') = 1 SET @Count += 1 ELSE SET @ErrMsg = '0,5-10 * * * * 00:10';
 IF dbo.CronValidate('0,20-22 * * * *', '00:20') = 1 SET @Count += 1 ELSE SET @ErrMsg = '0,20-22 * * * * 00:20';
 IF dbo.CronValidate('55-5,10 * * * *', '00:10') = 1 SET @Count += 1 ELSE SET @ErrMsg = '55-5,10 * * * * 00:10';
-IF dbo.CronValidate('57-5/3 * * * *', '00:57') = 1 SET @Count += 1 ELSE SET @ErrMsg = '57-5/3 * * * * 00:57';
+IF dbo.CronValidate('57-5/3 * * * *', '00:03') = 1 SET @Count += 1 ELSE SET @ErrMsg = '57-5/3 * * * * 00:03';
 
 IF @Count = 10 SELECT 'OK' ELSE SELECT @ErrMsg

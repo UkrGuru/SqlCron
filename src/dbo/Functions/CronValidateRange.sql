@@ -25,6 +25,7 @@ BEGIN
 
     SET @Begin = TRY_CAST(dbo.CronWord(@Expression, '-', 1) as int);
     SET @End = TRY_CAST(dbo.CronWord(@Expression, '-', 2) as int);
+    SET @Step = ISNULL(@Step, 1);
 
     IF @Begin IS NULL OR @End IS NULL RETURN 0;
 

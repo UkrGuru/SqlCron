@@ -7,8 +7,8 @@ AS
 BEGIN
     IF @Expression LIKE '%[^0-9*/]%' OR @Value IS NULL RETURN 0
 
-    DECLARE @Start int = ISNULL(TRY_CAST(dbo.CronWord(@Expression, '-', 1) as int), 0),
-        @Step int = TRY_CAST(dbo.CronWord(@Expression, '-', 2) as int);
+    DECLARE @Start int = ISNULL(TRY_CAST(dbo.CronWord(@Expression, '/', 1) as int), 0),
+        @Step int = TRY_CAST(dbo.CronWord(@Expression, '/', 2) as int);
 
     IF @Start IS NULL OR @Step IS NULL OR ISNULL(@Step, 0) <= 0 RETURN 0;
 
