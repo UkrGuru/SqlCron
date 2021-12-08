@@ -1,18 +1,12 @@
 ﻿-- ==============================================================
 -- Copyright (c) Oleksandr Viktor (UkrGuru). All rights reserved.
 -- ==============================================================
-CREATE FUNCTION [dbo].[CronValidateRange](@PartName varchar(10), @Expression varchar(100), @Value int)
+CREATE FUNCTION [dbo].[CronValidateRange](@Expression varchar(100), @Value int, @Min int, @Max int)
 RETURNS tinyint
 AS
 BEGIN
-    IF @Expression LIKE '%[^0-9*-/]%' OR @Value IS NULL RETURN 0
-
-    DECLARE @Min int, @Max int;
-    IF @PartName = 'MINUTE' SELECT @Min = 0, @Max = 59
-    ELSE IF @PartName = 'HOUR' SELECT @Min = 0, @Max = 23
-    ELSE IF @PartName = 'DAY' SELECT @Min = 1, @Max = 31
-    ELSE IF @PartName = 'MONTH' SELECT @Min = 1, @Max = 12
-    ELSE IF @PartName = 'WEEKDAY' SELECT @Min = 1, @Max = 7
+    IF @Expression LIKE '%[^0-9*-/]%' RETURN 0
+    IF @Value IS NULL OR @Min IS NULL OR @Max IS NULL OR NOT @Value BETWEEN @Min AND @Max RETURN 0  
 
     DECLARE @Begin int, @End int, @Step int
 
