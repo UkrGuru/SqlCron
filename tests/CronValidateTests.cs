@@ -30,25 +30,25 @@ namespace SqlCronTests
         [Fact]
         public void CronValidateTests()
         {
-            Assert.Equal("OK", DbHelper.FromProc("CronValidateTests"));
+            Assert.Equal("", DbHelper.FromProc("CronValidateTests"));
         }
 
         [Fact]
         public void CronValidatePartTests()
         {
-            Assert.Equal("OK", DbHelper.FromProc("CronValidatePartTests"));
+            Assert.Equal("", DbHelper.FromProc("CronValidatePartTests"));
         }
 
         [Fact]
         public void CronValidateRangeTests()
         {
-            Assert.Equal("OK", DbHelper.FromProc("CronValidateRangeTests"));
+            Assert.Equal("", DbHelper.FromProc("CronValidateRangeTests"));
         }
 
         [Fact]
         public void CronValidateStepTests()
         {
-            Assert.Equal("OK", DbHelper.FromProc("CronValidateStepTests"));
+            Assert.Equal("", DbHelper.FromProc("CronValidateStepTests"));
         }
     }
 }

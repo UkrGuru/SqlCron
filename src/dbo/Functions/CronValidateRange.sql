@@ -24,7 +24,9 @@ BEGIN
     IF @Begin IS NULL OR @End IS NULL RETURN 0;
 
     DECLARE @i int = @Begin, @OneMore int = CASE WHEN @End < @Begin THEN 1 ELSE 0 END 
-       
+    
+    IF @OneMore = 0 AND @End < @Max SET @Max = @End 
+
     WHILE @i <= @Max BEGIN
 
         IF @i = @Value RETURN 1

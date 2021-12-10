@@ -3,29 +3,59 @@
 -- ==============================================================
 CREATE   PROCEDURE [dbo].[CronValidateRangeTests] 
 AS
-DECLARE @Count int = 0, @ErrMsg varchar(100);
-
+DECLARE @Tests TABLE (Expression varchar(100), Value int, Min int, Max int, Expected tinyint)
 DECLARE @Min int, @Max int;
 
--- minute
+-- minute tests
 SELECT @Min = 0, @Max = 59	
 
-IF dbo.CronValidateRange('0-5', 0, @Min, @Max) = 1 SET @Count += 1 ELSE	SET @ErrMsg = 'MINUTE_0-5_0';
-IF dbo.CronValidateRange('0-5', 5, @Min, @Max) = 1 SET @Count += 1 ELSE	SET @ErrMsg = 'MINUTE_0-5_5';
-IF dbo.CronValidateRange('55-59', 55, @Min, @Max) = 1 SET @Count += 1 ELSE SET @ErrMsg = 'MINUTE_55-59_55';
-IF dbo.CronValidateRange('55-59', 59, @Min, @Max) = 1 SET @Count += 1 ELSE SET @ErrMsg = 'MINUTE_55-59_59';
-IF dbo.CronValidateRange('00-59', 0, @Min, @Max) = 1 SET @Count += 1 ELSE	SET @ErrMsg = 'MINUTE_00-59_0';
+INSERT @Tests VALUES ('0-1', -1, @Min, @Max, 0)
+INSERT @Tests VALUES ('0-1', 0, @Min, @Max, 1)
+INSERT @Tests VALUES ('0-1', 1, @Min, @Max, 1)
+INSERT @Tests VALUES ('0-1', 2, @Min, @Max, 0)
 
-IF dbo.CronValidateRange('55-5', 55, @Min, @Max) = 1 SET @Count += 1 ELSE	SET @ErrMsg = 'MINUTE_55-5_55';
-IF dbo.CronValidateRange('55-5', 59, @Min, @Max) = 1 SET @Count += 1 ELSE	SET @ErrMsg = 'MINUTE_55-5_59';
-IF dbo.CronValidateRange('55-5', 0, @Min, @Max) = 1 SET @Count += 1 ELSE	SET @ErrMsg = 'MINUTE_55-5_0';
-IF dbo.CronValidateRange('55-5', 3, @Min, @Max) = 1 SET @Count += 1 ELSE	SET @ErrMsg = 'MINUTE_55-5_3';
-IF dbo.CronValidateRange('55-5', 5, @Min, @Max) = 1 SET @Count += 1 ELSE	SET @ErrMsg = 'MINUTE_55-5_5';
+INSERT @Tests VALUES ('0-2', -1, @Min, @Max, 0)
+INSERT @Tests VALUES ('0-2', 0, @Min, @Max, 1)
+INSERT @Tests VALUES ('0-2', 1, @Min, @Max, 1)
+INSERT @Tests VALUES ('0-2', 2, @Min, @Max, 1)
+INSERT @Tests VALUES ('0-2', 3, @Min, @Max, 0)
 
-IF dbo.CronValidateRange('0-15/5', 0, @Min, @Max) = 1 SET @Count += 1 ELSE SET @ErrMsg = 'MINUTE_0-15/5_0';
-IF dbo.CronValidateRange('0-15/5', 10, @Min, @Max) = 1 SET @Count += 1 ELSE SET @ErrMsg = 'MINUTE_0-15/5_10';
-IF dbo.CronValidateRange('0-15/5', 15, @Min, @Max) = 1 SET @Count += 1 ELSE SET @ErrMsg = 'MINUTE_0-15/5_15';
-IF dbo.CronValidateRange('55-5/5', 0, @Min, @Max) = 1 SET @Count += 1 ELSE	SET @ErrMsg = 'MINUTE_55-5/5_0';
-IF dbo.CronValidateRange('55-5/5', 5, @Min, @Max) = 1 SET @Count += 1 ELSE	SET @ErrMsg = 'MINUTE_55-5/5_5';
+INSERT @Tests VALUES ('59-0', 58, @Min, @Max, 0)
+INSERT @Tests VALUES ('59-0', 59, @Min, @Max, 1)
+INSERT @Tests VALUES ('59-0', 60, @Min, @Max, 0)
+INSERT @Tests VALUES ('59-0', 0, @Min, @Max, 1)
+INSERT @Tests VALUES ('59-0', 1, @Min, @Max, 0)
 
-IF @Count = 15 SELECT 'OK' ELSE SELECT CAST(@Count as varchar)
+INSERT @Tests VALUES ('58-1', 57, @Min, @Max, 0)
+INSERT @Tests VALUES ('58-1', 58, @Min, @Max, 1)
+INSERT @Tests VALUES ('58-1', 59, @Min, @Max, 1)
+INSERT @Tests VALUES ('58-1', 60, @Min, @Max, 0)
+INSERT @Tests VALUES ('58-1', 0, @Min, @Max, 1)
+INSERT @Tests VALUES ('58-1', 1, @Min, @Max, 1)
+INSERT @Tests VALUES ('58-1', 2, @Min, @Max, 0)
+
+INSERT @Tests VALUES ('0-15/5', -5, @Min, @Max, 0)
+INSERT @Tests VALUES ('0-15/5', -1, @Min, @Max, 0)
+INSERT @Tests VALUES ('0-15/5', 0, @Min, @Max, 1)
+INSERT @Tests VALUES ('0-15/5', 1, @Min, @Max, 0)
+INSERT @Tests VALUES ('0-15/5', 2, @Min, @Max, 0)
+INSERT @Tests VALUES ('0-15/5', 3, @Min, @Max, 0)
+INSERT @Tests VALUES ('0-15/5', 4, @Min, @Max, 0)
+INSERT @Tests VALUES ('0-15/5', 5, @Min, @Max, 1)
+INSERT @Tests VALUES ('0-15/5', 10, @Min, @Max, 1)
+INSERT @Tests VALUES ('0-15/5', 15, @Min, @Max, 1)
+INSERT @Tests VALUES ('0-15/5', 16, @Min, @Max, 0)
+INSERT @Tests VALUES ('0-15/5', 20, @Min, @Max, 0)
+
+INSERT @Tests VALUES ('58-1/2', 57, @Min, @Max, 0)
+INSERT @Tests VALUES ('58-1/2', 58, @Min, @Max, 1)
+INSERT @Tests VALUES ('58-1/2', 59, @Min, @Max, 0)
+INSERT @Tests VALUES ('58-1/2', 60, @Min, @Max, 0)
+INSERT @Tests VALUES ('58-1/2', 0, @Min, @Max, 1)
+INSERT @Tests VALUES ('58-1/2', 1, @Min, @Max, 0)
+INSERT @Tests VALUES ('58-1/2', 2, @Min, @Max, 0)
+
+SELECT Expected, dbo.CronValidateRange(Expression, Value, Min, Max) Actual,
+	Expression + '_' + CAST(Value as varchar) + '_' + CAST(Min as varchar) + '_' + CAST(Max as varchar) Func
+FROM @Tests
+WHERE Expected <> dbo.CronValidateRange(Expression, Value, Min, Max)

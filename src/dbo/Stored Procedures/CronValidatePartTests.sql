@@ -1,60 +1,69 @@
 ﻿-- ==============================================================
 -- Copyright (c) Oleksandr Viktor (UkrGuru). All rights reserved.
 -- ==============================================================
-CREATE   PROCEDURE [dbo].[CronValidatePartTests] 
+CREATE PROCEDURE [dbo].[CronValidatePartTests] 
 AS
-DECLARE @Count int = 0, @ErrMsg varchar(100);
-
+DECLARE @Tests TABLE (Expression varchar(100), Value int, Min int, Max int, Expected tinyint)
 DECLARE @Min int, @Max int;
 
--- minute
+-- minute tests
 SELECT @Min = 0, @Max = 59	
 
--- test invalid values
-IF dbo.CronValidatePart('-1',    -1, @Min, @Max) = 0 SET @Count += 1 ELSE SET @ErrMsg = '!_MINUTE_-1_-1';
-IF dbo.CronValidatePart('60',    60, @Min, @Max) = 0 SET @Count += 1 ELSE SET @ErrMsg = '!_MINUTE_60_60';
+INSERT @Tests VALUES ('-1', -1, @Min, @Max, 0)
+INSERT @Tests VALUES ('60', 60, @Min, @Max, 0)
 
--- test valid values
-IF dbo.CronValidatePart('*',	 0, @Min, @Max) = 1 SET @Count += 1 ELSE SET @ErrMsg = 'MINUTE_*_0';
-IF dbo.CronValidatePart('0',	 0, @Min, @Max) = 1 SET @Count += 1 ELSE SET @ErrMsg = 'HOUR_0_0';
-IF dbo.CronValidatePart('1',	 1, @Min, @Max) = 1 SET @Count += 1 ELSE SET @ErrMsg = 'DAY_1_1';
-IF dbo.CronValidatePart('0,1',   1, @Min, @Max) = 1 SET @Count += 1 ELSE SET @ErrMsg = 'MONTH_0,1_1';
-IF dbo.CronValidatePart('1,2,3', 2, @Min, @Max) = 1 SET @Count += 1 ELSE SET @ErrMsg = 'WEEKDAY_1,2,3_2';
+INSERT @Tests VALUES ('*',	   0, @Min, @Max, 1)
+INSERT @Tests VALUES ('0',	   0, @Min, @Max, 1)
 
-IF dbo.CronValidatePart('3,4-5', 3, @Min, @Max)  = 1 SET @Count += 1 ELSE SET @ErrMsg = 'MINUTE_3,4-5_3';
-IF dbo.CronValidatePart('3,4-5', 4, @Min, @Max)  = 1 SET @Count += 1 ELSE SET @ErrMsg = 'MINUTE_3,4-5_4';
-IF dbo.CronValidatePart('3,4-5', 5, @Min, @Max)  = 1 SET @Count += 1 ELSE SET @ErrMsg = 'MINUTE_3,4-5_5';
-IF dbo.CronValidatePart('4-5,3', 4, @Min, @Max)  = 1 SET @Count += 1 ELSE SET @ErrMsg = 'MINUTE_4-5,3_4';
-IF dbo.CronValidatePart('4-5,3', 3, @Min, @Max)  = 1 SET @Count += 1 ELSE SET @ErrMsg = 'MINUTE_4-5,3_3';
+INSERT @Tests VALUES ('0,1',   -1, @Min, @Max, 0)
+INSERT @Tests VALUES ('0,1',   0, @Min, @Max, 1)
+INSERT @Tests VALUES ('0,1',   1, @Min, @Max, 1)
+INSERT @Tests VALUES ('0,1',   2, @Min, @Max, 0)
 
-IF dbo.CronValidatePart('6,7/8', 6,  @Min, @Max)  = 1 SET @Count += 1 ELSE SET @ErrMsg = 'MINUTE_6,7/8_6';
-IF dbo.CronValidatePart('6,7/8', 7,  @Min, @Max)  = 1 SET @Count += 1 ELSE SET @ErrMsg = 'MINUTE_6,7/8_7';
-IF dbo.CronValidatePart('6,7/8', 15, @Min, @Max) = 1 SET @Count += 1 ELSE SET @ErrMsg = 'MINUTE_6,7/8_15';
-IF dbo.CronValidatePart('7/8,6', 15, @Min, @Max) = 1 SET @Count += 1 ELSE SET @ErrMsg = 'MINUTE_7/8,6_15';
-IF dbo.CronValidatePart('7/8,6', 6,  @Min, @Max)  = 1 SET @Count += 1 ELSE SET @ErrMsg = 'MINUTE_7/8,6_6';
+INSERT @Tests VALUES ('0,1,2', -1, @Min, @Max, 0)
+INSERT @Tests VALUES ('0,1,2', 0, @Min, @Max, 1)
+INSERT @Tests VALUES ('0,1,2', 1, @Min, @Max, 1)
+INSERT @Tests VALUES ('0,1,2', 2, @Min, @Max, 1)
+INSERT @Tests VALUES ('0,1,2', 3, @Min, @Max, 0)
 
--- hour
+INSERT @Tests VALUES ('3,4-5', 4, @Min, @Max, 1)
+INSERT @Tests VALUES ('3,4-5', 5, @Min, @Max, 1)
+INSERT @Tests VALUES ('4-5,3', 4, @Min, @Max, 1)
+INSERT @Tests VALUES ('4-5,3', 3, @Min, @Max, 1)
+
+INSERT @Tests VALUES ('3,4-5', 3, @Min, @Max, 1)
+INSERT @Tests VALUES ('3,4-5', 4, @Min, @Max, 1)
+INSERT @Tests VALUES ('3,4-5', 5, @Min, @Max, 1)
+INSERT @Tests VALUES ('4-5,3', 4, @Min, @Max, 1)
+INSERT @Tests VALUES ('4-5,3', 3, @Min, @Max, 1)
+
+INSERT @Tests VALUES ('6,7/8', 6, @Min, @Max, 1)
+INSERT @Tests VALUES ('6,7/8', 7, @Min, @Max, 1)
+INSERT @Tests VALUES ('6,7/8', 15, @Min, @Max, 1)
+INSERT @Tests VALUES ('7/8,6', 15, @Min, @Max, 1)
+INSERT @Tests VALUES ('7/8,6', 6, @Min, @Max, 1)
+
+-- hour tests
 SELECT @Min = 0, @Max = 23	
+INSERT @Tests VALUES ('-1', -1, @Min, @Max, 0)
+INSERT @Tests VALUES ('24', 24, @Min, @Max, 0)
 
-IF dbo.CronValidatePart('-1', -1,  @Min, @Max) = 0 SET @Count += 1 ELSE SET @ErrMsg = '!_HOUR_-1_-1';
-IF dbo.CronValidatePart('24', 24,  @Min, @Max) = 0 SET @Count += 1 ELSE SET @ErrMsg = '!_HOUR_24_24';
-
--- day
+-- day tests
 SELECT @Min = 1, @Max = 31	
+INSERT @Tests VALUES ('0',  0, @Min, @Max, 0)
+INSERT @Tests VALUES ('32', 32, @Min, @Max, 0)
 
-IF dbo.CronValidatePart('0', 0,  @Min, @Max) = 0 SET @Count += 1 ELSE SET @ErrMsg = '!_DAY_0_0';
-IF dbo.CronValidatePart('32', 32,  @Min, @Max) = 0 SET @Count += 1 ELSE SET @ErrMsg = '!_DAY_32_32';
-
--- month
+-- month tests
 SELECT @Min = 1, @Max = 12	
+INSERT @Tests VALUES ('0',  0, @Min, @Max, 0)
+INSERT @Tests VALUES ('13', 13, @Min, @Max, 0)
 
-IF dbo.CronValidatePart('0', 0,  @Min, @Max) = 0 SET @Count += 1 ELSE SET @ErrMsg = '!_MONTH_0_0';
-IF dbo.CronValidatePart('13', 13,  @Min, @Max) = 0 SET @Count += 1 ELSE SET @ErrMsg = '!_MONTH_13_13';
-
--- weekday
+-- weekday tests
 SELECT @Min = 1, @Max = 7	
+INSERT @Tests VALUES ('0', 0, @Min, @Max, 0)
+INSERT @Tests VALUES ('8', 8, @Min, @Max, 0)
 
-IF dbo.CronValidatePart('0', 0,  @Min, @Max) = 0 SET @Count += 1 ELSE SET @ErrMsg = '!_WEEKDAY_-1_-1';
-IF dbo.CronValidatePart('8', 8,  @Min, @Max) = 0 SET @Count += 1 ELSE SET @ErrMsg = '!_WEEKDAY_8_8';
-
-IF @Count = 25 SELECT 'OK' ELSE SELECT @ErrMsg
+SELECT Expected, dbo.CronValidatePart(Expression, Value, Min, Max) Actual,
+	Expression + '_' + CAST(Value as varchar) + '_' + CAST(Min as varchar) + '_' + CAST(Max as varchar) Func
+FROM @Tests
+WHERE Expected <> dbo.CronValidatePart(Expression, Value, Min, Max)

@@ -72,6 +72,7 @@
     <Build Include="dbo\Stored Procedures\CronValidatePartTests.sql" />
     <Build Include="dbo\Stored Procedures\CronValidateRangeTests.sql" />
     <Build Include="dbo\Stored Procedures\CronValidateStepTests.sql" />
+    <None Include="Debug.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Tests.sql" />
