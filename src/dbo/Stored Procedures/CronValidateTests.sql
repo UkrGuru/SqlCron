@@ -94,7 +94,7 @@ INSERT @Tests VALUES ('* * * 1,2/3 *', '2021-04-01 00:00:00', 0)
 INSERT @Tests VALUES ('* * * 1,2/3 *', '2021-05-01 00:00:00', 1)
 
 -- weekday tests
-INSERT @Tests VALUES ('* * * * 2', '2021-11-01 00:00:00', 1)
+INSERT @Tests VALUES ('* * * * 1', '2021-11-01 00:00:00', 1)
 INSERT @Tests VALUES ('* * * * mon', '2021-11-01 00:00:00', 1)
 INSERT @Tests VALUES ('* * * * Mon', '2021-11-01 00:00:00', 1)
 INSERT @Tests VALUES ('* * * * MON', '2021-11-01 00:00:00', 1)
@@ -107,20 +107,20 @@ INSERT @Tests VALUES ('* * * * THU', '2021-11-04 00:00:00', 1)
 INSERT @Tests VALUES ('* * * * FRI', '2021-11-05 00:00:00', 1)
 INSERT @Tests VALUES ('* * * * SAT', '2021-11-06 00:00:00', 1)
 
-INSERT @Tests VALUES ('* * * * 1,2', '2021-11-01 00:00:00', 1)
-INSERT @Tests VALUES ('* * * * 1,2', '2021-11-02 00:00:00', 0)
+INSERT @Tests VALUES ('* * * * 0,1', '2021-11-01 00:00:00', 1)
+INSERT @Tests VALUES ('* * * * 0,1', '2021-11-02 00:00:00', 0)
 INSERT @Tests VALUES ('* * * * SUN,MON', '2021-10-31 00:00:00', 1)
 
 INSERT @Tests VALUES ('* * * * SUN,MON-TUE', '2021-11-01 00:00:00', 1)
-INSERT @Tests VALUES ('* * * * 1,2-3', '2021-11-02 00:00:00', 1)
-INSERT @Tests VALUES ('* * * * 1,2-3', '2021-11-03 00:00:00', 0)
-INSERT @Tests VALUES ('* * * * 1,2-3', '2021-11-04 00:00:00', 0)
+INSERT @Tests VALUES ('* * * * 0,1-2', '2021-11-02 00:00:00', 1)
+INSERT @Tests VALUES ('* * * * 0,1-2', '2021-11-03 00:00:00', 0)
+INSERT @Tests VALUES ('* * * * 0,1-2', '2021-11-04 00:00:00', 0)
 
 INSERT @Tests VALUES ('* * * * SUN,MON/3', '2021-11-01 00:00:00', 1)
-INSERT @Tests VALUES ('* * * * 1,2/3', '2021-11-02 00:00:00', 0)
-INSERT @Tests VALUES ('* * * * 1,2/3', '2021-11-03 00:00:00', 0)
-INSERT @Tests VALUES ('* * * * 1,2/3', '2021-11-04 00:00:00', 1)
-INSERT @Tests VALUES ('* * * * 1,2/3', '2021-11-05 00:00:00', 0)
+INSERT @Tests VALUES ('* * * * 0,1/2', '2021-11-02 00:00:00', 0)
+INSERT @Tests VALUES ('* * * * 0,1/2', '2021-11-03 00:00:00', 1)
+INSERT @Tests VALUES ('* * * * 0,1/2', '2021-11-04 00:00:00', 0)
+INSERT @Tests VALUES ('* * * * 0,1/2', '2021-11-05 00:00:00', 1)
 
 SELECT Expected, dbo.CronValidate(Expression, Value) Actual,
 	Expression + '_' + CAST(Value as varchar(20)) Func

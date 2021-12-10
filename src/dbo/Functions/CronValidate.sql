@@ -11,7 +11,7 @@ BEGIN
                         UPPER(@Expression), 
 		                'JAN', '1'),'FEB', '2'),'MAR', '3'),'APR', '4'),'MAY', '5'),'JUN', '6'),
 		                'JUL', '7'),'AUG', '8'),'SEP', '9'),'OCT', '10'),'NOV', '11'),'DEC', '12'),
-		                'SUN', '1'),'MON', '2'),'TUE', '3'),'WED', '4'),'THU', '5'),'FRI', '6'),'SAT', '7')
+		                'SUN', '0'),'MON', '1'),'TUE', '2'),'WED', '3'),'THU', '4'),'FRI', '5'),'SAT', '6')
 
     IF @Expression LIKE '%[^0-9*,-/ ]%' RETURN 0
 
@@ -23,7 +23,7 @@ BEGIN
 
     IF dbo.CronValidatePart(dbo.CronWord(@Expression, ' ', 4), DATEPART(MONTH, @Now), 1, 12) = 0 RETURN 0;
 
-    IF dbo.CronValidatePart(dbo.CronWord(@Expression, ' ', 5), DATEPART(WEEKDAY, @Now), 1, 7) = 0 RETURN 0;
+    IF dbo.CronValidatePart(dbo.CronWord(@Expression, ' ', 5), dbo.CronWeekDay(@Now), 0, 6) = 0 RETURN 0;
 
     RETURN 1
 END
