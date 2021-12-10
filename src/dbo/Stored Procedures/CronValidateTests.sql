@@ -1,31 +1,128 @@
 ﻿-- ==============================================================
 -- Copyright (c) Oleksandr Viktor (UkrGuru). All rights reserved.
 -- ==============================================================
-CREATE   PROCEDURE [dbo].[CronValidateTests] 
+CREATE PROCEDURE [dbo].[CronValidateTests] 
 AS
-DECLARE @Tests TABLE (Expression varchar(100), Value int, Min int, Max int, Expected tinyint)
-DECLARE @Min int, @Max int;
+DECLARE @Tests TABLE (Expression varchar(100), Value datetime, Expected tinyint)
 
 -- minute tests
---SELECT @Min = 0, @Max = 59	
+INSERT @Tests VALUES ('* * * * *', '2022-01-01 00:00:00', 1)
+INSERT @Tests VALUES ('0 * * * *', '2021-11-01 00:00:00', 1)
+INSERT @Tests VALUES ('1 * * * *', '2021-11-01 00:01:00', 1)
 
---INSERT @Tests VALUES ('*/5', 0, @Min, @Max, 1)
---INSERT @Tests VALUES ('*/5', 55, @Min, @Max, 1)
+INSERT @Tests VALUES ('0,1 * * * *', '2021-11-01 00:00:00', 1)
+INSERT @Tests VALUES ('0,1 * * * *', '2021-11-01 00:01:00', 1)
+INSERT @Tests VALUES ('0,1 * * * *', '2021-11-01 00:02:00', 0)
 
---INSERT @Tests VALUES ('5/4', 5, @Min, @Max, 1)
---INSERT @Tests VALUES ('6/5', 11, @Min, @Max, 1)
---INSERT @Tests VALUES ('7/8', 55, @Min, @Max, 1)
---INSERT @Tests VALUES ('9/10', 59, @Min, @Max, 1)
---INSERT @Tests VALUES ('11/12', 23, @Min, @Max, 1)
+INSERT @Tests VALUES ('0,1-2 * * * *', '2021-11-01 00:00:00', 1)
+INSERT @Tests VALUES ('0,1-2 * * * *', '2021-11-01 00:01:00', 1)
+INSERT @Tests VALUES ('0,1-2 * * * *', '2021-11-01 00:02:00', 1)
+INSERT @Tests VALUES ('0,1-2 * * * *', '2021-11-01 00:03:00', 0)
 
---INSERT @Tests VALUES ('0/59', 59, @Min, @Max, 1)
+INSERT @Tests VALUES ('0,1/2 * * * *', '2021-11-01 00:00:00', 1)
+INSERT @Tests VALUES ('0,1/2 * * * *', '2021-11-01 00:01:00', 1)
+INSERT @Tests VALUES ('0,1/2 * * * *', '2021-11-01 00:02:00', 0)
+INSERT @Tests VALUES ('0,1/2 * * * *', '2021-11-01 00:03:00', 1)
 
---IF dbo.CronValidateStep('HOUR', '0/23', 23, @Min, @Max) = 1 SET @Count += 1 ELSE	SET @ErrMsg = 'HOUR_0/23_23';
---IF dbo.CronValidateStep('DAY', '1/30', 31, @Min, @Max) = 1 SET @Count += 1 ELSE		SET @ErrMsg = 'DAY_1/30_31';
---IF dbo.CronValidateStep('MONTH', '1/11', 12, @Min, @Max) = 1 SET @Count += 1 ELSE	SET @ErrMsg = 'MONTH_1/11_12';
---IF dbo.CronValidateStep('WEEKDAY', '1/6', 7, @Min, @Max) = 1 SET @Count += 1 ELSE	SET @ErrMsg = 'WEEKDAY_1/6_7';
+-- hour tests
+INSERT @Tests VALUES ('* 1 * * *', '2021-11-01 01:00:00', 1)
 
---SELECT Expected, dbo.CronValidate(Expression, Value, Min, Max) Actual,
---	Expression + '_' + CAST(Value as varchar) + '_' + CAST(Min as varchar) + '_' + CAST(Max as varchar) Func
---FROM @Tests
---WHERE Expected <> dbo.CronValidate(Expression, Value, Min, Max)
+INSERT @Tests VALUES ('* 0,1 * * *', '2021-11-01 00:00:00', 1)
+INSERT @Tests VALUES ('* 0,1 * * *', '2021-11-01 01:01:00', 1)
+INSERT @Tests VALUES ('* 0,1 * * *', '2021-11-01 02:02:00', 0)
+
+INSERT @Tests VALUES ('* 0,1-2 * * *', '2021-11-01 00:00:00', 1)
+INSERT @Tests VALUES ('* 0,1-2 * * *', '2021-11-01 01:01:00', 1)
+INSERT @Tests VALUES ('* 0,1-2 * * *', '2021-11-01 02:02:00', 1)
+INSERT @Tests VALUES ('* 0,1-2 * * *', '2021-11-01 03:03:00', 0)
+
+INSERT @Tests VALUES ('* 0,1/2 * * *', '2021-11-01 00:00:00', 1)
+INSERT @Tests VALUES ('* 0,1/2 * * *', '2021-11-01 01:01:00', 1)
+INSERT @Tests VALUES ('* 0,1/2 * * *', '2021-11-01 02:02:00', 0)
+INSERT @Tests VALUES ('* 0,1/2 * * *', '2021-11-01 03:03:00', 1)
+
+-- day tests
+INSERT @Tests VALUES ('* * 1 * *', '2021-11-01 00:00:00', 1)
+
+INSERT @Tests VALUES ('* * 1,2 * *', '2021-11-01 00:00:00', 1)
+INSERT @Tests VALUES ('* * 1,2 * *', '2021-11-02 00:00:00', 1)
+INSERT @Tests VALUES ('* * 1,2 * *', '2021-11-03 00:00:00', 0)
+
+INSERT @Tests VALUES ('* * 1,2-3 * *', '2021-11-01 00:00:00', 1)
+INSERT @Tests VALUES ('* * 1,2-3 * *', '2021-11-02 00:00:00', 1)
+INSERT @Tests VALUES ('* * 1,2-3 * *', '2021-11-03 00:00:00', 1)
+INSERT @Tests VALUES ('* * 1,2-3 * *', '2021-11-04 00:00:00', 0)
+
+INSERT @Tests VALUES ('* * 1,2/3 * *', '2021-11-01 00:00:00', 1)
+INSERT @Tests VALUES ('* * 1,2/3 * *', '2021-11-02 00:00:00', 1)
+INSERT @Tests VALUES ('* * 1,2/3 * *', '2021-11-03 00:00:00', 0)
+INSERT @Tests VALUES ('* * 1,2/3 * *', '2021-11-04 00:00:00', 0)
+INSERT @Tests VALUES ('* * 1,2/3 * *', '2021-11-05 00:00:00', 1)
+
+-- month tests
+INSERT @Tests VALUES ('* * * 1 *', '2021-01-01 00:00:00', 1)
+INSERT @Tests VALUES ('* * * jan *', '2021-01-01 00:00:00', 1)
+INSERT @Tests VALUES ('* * * Jan *', '2021-01-01 00:00:00', 1)
+INSERT @Tests VALUES ('* * * JAN *', '2021-01-01 00:00:00', 1)
+
+INSERT @Tests VALUES ('* * * JAN *', '2021-01-01 00:00:00', 1)
+INSERT @Tests VALUES ('* * * FEB *', '2021-02-01 00:00:00', 1)
+INSERT @Tests VALUES ('* * * MAR *', '2021-03-01 00:00:00', 1)
+INSERT @Tests VALUES ('* * * APR *', '2021-04-01 00:00:00', 1)
+INSERT @Tests VALUES ('* * * MAY *', '2021-05-01 00:00:00', 1)
+INSERT @Tests VALUES ('* * * JUN *', '2021-06-01 00:00:00', 1)
+INSERT @Tests VALUES ('* * * JUL *', '2021-07-01 00:00:00', 1)
+INSERT @Tests VALUES ('* * * AUG *', '2021-08-01 00:00:00', 1)
+INSERT @Tests VALUES ('* * * SEP *', '2021-09-01 00:00:00', 1)
+INSERT @Tests VALUES ('* * * OCT *', '2021-10-01 00:00:00', 1)
+INSERT @Tests VALUES ('* * * NOV *', '2021-11-01 00:00:00', 1)
+INSERT @Tests VALUES ('* * * DEC *', '2021-12-01 00:00:00', 1)
+
+INSERT @Tests VALUES ('* * * 1,2 *', '2021-01-01 00:00:00', 1)
+INSERT @Tests VALUES ('* * * 1,2 *', '2021-02-01 00:00:00', 1)
+INSERT @Tests VALUES ('* * * 1,2 *', '2021-03-01 00:00:00', 0)
+
+INSERT @Tests VALUES ('* * * 1,2-3 *', '2021-01-01 00:00:00', 1)
+INSERT @Tests VALUES ('* * * 1,2-3 *', '2021-02-01 00:00:00', 1)
+INSERT @Tests VALUES ('* * * 1,2-3 *', '2021-03-01 00:00:00', 1)
+INSERT @Tests VALUES ('* * * 1,2-3 *', '2021-04-01 00:00:00', 0)
+
+INSERT @Tests VALUES ('* * * 1,2/3 *', '2021-01-01 00:00:00', 1)
+INSERT @Tests VALUES ('* * * 1,2/3 *', '2021-02-01 00:00:00', 1)
+INSERT @Tests VALUES ('* * * 1,2/3 *', '2021-03-01 00:00:00', 0)
+INSERT @Tests VALUES ('* * * 1,2/3 *', '2021-04-01 00:00:00', 0)
+INSERT @Tests VALUES ('* * * 1,2/3 *', '2021-05-01 00:00:00', 1)
+
+-- weekday tests
+INSERT @Tests VALUES ('* * * * 2', '2021-11-01 00:00:00', 1)
+INSERT @Tests VALUES ('* * * * mon', '2021-11-01 00:00:00', 1)
+INSERT @Tests VALUES ('* * * * Mon', '2021-11-01 00:00:00', 1)
+INSERT @Tests VALUES ('* * * * MON', '2021-11-01 00:00:00', 1)
+
+INSERT @Tests VALUES ('* * * * SUN', '2021-10-31 00:00:00', 1)
+INSERT @Tests VALUES ('* * * * MON', '2021-11-01 00:00:00', 1)
+INSERT @Tests VALUES ('* * * * TUE', '2021-11-02 00:00:00', 1)
+INSERT @Tests VALUES ('* * * * WED', '2021-11-03 00:00:00', 1)
+INSERT @Tests VALUES ('* * * * THU', '2021-11-04 00:00:00', 1)
+INSERT @Tests VALUES ('* * * * FRI', '2021-11-05 00:00:00', 1)
+INSERT @Tests VALUES ('* * * * SAT', '2021-11-06 00:00:00', 1)
+
+INSERT @Tests VALUES ('* * * * 1,2', '2021-11-01 00:00:00', 1)
+INSERT @Tests VALUES ('* * * * 1,2', '2021-11-02 00:00:00', 0)
+INSERT @Tests VALUES ('* * * * SUN,MON', '2021-10-31 00:00:00', 1)
+
+INSERT @Tests VALUES ('* * * * SUN,MON-TUE', '2021-11-01 00:00:00', 1)
+INSERT @Tests VALUES ('* * * * 1,2-3', '2021-11-02 00:00:00', 1)
+INSERT @Tests VALUES ('* * * * 1,2-3', '2021-11-03 00:00:00', 0)
+INSERT @Tests VALUES ('* * * * 1,2-3', '2021-11-04 00:00:00', 0)
+
+INSERT @Tests VALUES ('* * * * SUN,MON/3', '2021-11-01 00:00:00', 1)
+INSERT @Tests VALUES ('* * * * 1,2/3', '2021-11-02 00:00:00', 0)
+INSERT @Tests VALUES ('* * * * 1,2/3', '2021-11-03 00:00:00', 0)
+INSERT @Tests VALUES ('* * * * 1,2/3', '2021-11-04 00:00:00', 1)
+INSERT @Tests VALUES ('* * * * 1,2/3', '2021-11-05 00:00:00', 0)
+
+SELECT Expected, dbo.CronValidate(Expression, Value) Actual,
+	Expression + '_' + CAST(Value as varchar(20)) Func
+FROM @Tests
+WHERE Expected <> dbo.CronValidate(Expression, Value)
