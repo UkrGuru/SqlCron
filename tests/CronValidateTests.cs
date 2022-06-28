@@ -1,3 +1,4 @@
+using System.Reflection;
 using UkrGuru.SqlJson;
 using Xunit;
 

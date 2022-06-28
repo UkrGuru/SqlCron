@@ -5,7 +5,7 @@ CREATE FUNCTION [dbo].[CronValidateRange](@Expression varchar(100), @Value int, 
 RETURNS tinyint
 AS
 BEGIN
-    IF @Expression LIKE '%[^0-9*-/]%' RETURN 0
+    IF @Expression LIKE '%[^0-9*/-]%' RETURN 0
     IF @Value IS NULL OR @Min IS NULL OR @Max IS NULL OR NOT @Value BETWEEN @Min AND @Max RETURN 0  
 
     DECLARE @Begin int, @End int, @Step int

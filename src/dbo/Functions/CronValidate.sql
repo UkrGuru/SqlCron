@@ -13,7 +13,7 @@ BEGIN
 		                'JUL', '7'),'AUG', '8'),'SEP', '9'),'OCT', '10'),'NOV', '11'),'DEC', '12'),
 		                'SUN', '0'),'MON', '1'),'TUE', '2'),'WED', '3'),'THU', '4'),'FRI', '5'),'SAT', '6')
 
-    IF @Expression LIKE '%[^0-9*,-/ ]%' RETURN 0
+    IF NOT @Expression LIKE '%[^0-9*,/ -]%' RETURN 0
 
     IF dbo.CronValidatePart(dbo.CronWord(@Expression, ' ', 1), DATEPART(MINUTE, @Now), 0, 59) = 0 RETURN 0;
 
