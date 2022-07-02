@@ -1,7 +1,7 @@
 ﻿
 DECLARE @Expression varchar(100) = '0-1', @Value int = 2, @Min int = 0, @Max int = 59
 
-IF @Expression LIKE '%[^0-9*-/]%' SELECT 0
+IF @Expression LIKE '%[^0-9*/-]%' SELECT 0
 IF @Value IS NULL OR @Min IS NULL OR @Max IS NULL OR NOT @Value BETWEEN @Min AND @Max SELECT 0  
 
 DECLARE @Begin int, @End int, @Step int
