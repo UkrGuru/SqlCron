@@ -72,7 +72,6 @@
     <Build Include="dbo\Stored Procedures\CronValidatePartTests.sql" />
     <Build Include="dbo\Stored Procedures\CronValidateRangeTests.sql" />
     <Build Include="dbo\Stored Procedures\CronValidateStepTests.sql" />
-    <None Include="Debug.sql" />
     <Build Include="dbo\Functions\CronWeekDay.sql" />
     <Build Include="dbo\Stored Procedures\CronWeekDayTests.sql" />
     <Build Include="dbo\Functions\CronWord.sql" />

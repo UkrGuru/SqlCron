@@ -5,8 +5,6 @@ VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "SqlCron", "src\SqlCron.sqlproj", "{89A3D871-6619-4431-9673-AA6F94316261}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlCronTests", "tests\SqlCronTests.csproj", "{034B6259-93E1-484B-B62B-45528D5EEFAD}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,10 +17,6 @@ Global
 		{89A3D871-6619-4431-9673-AA6F94316261}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89A3D871-6619-4431-9673-AA6F94316261}.Release|Any CPU.Build.0 = Release|Any CPU
 		{89A3D871-6619-4431-9673-AA6F94316261}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{034B6259-93E1-484B-B62B-45528D5EEFAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{034B6259-93E1-484B-B62B-45528D5EEFAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{034B6259-93E1-484B-B62B-45528D5EEFAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{034B6259-93E1-484B-B62B-45528D5EEFAD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

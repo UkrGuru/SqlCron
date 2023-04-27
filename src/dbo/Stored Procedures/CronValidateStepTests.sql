@@ -4,7 +4,7 @@
 CREATE OR ALTER PROCEDURE [dbo].[CronValidateStepTests] 
 AS
 DECLARE @Tests TABLE (Expression varchar(100), Value int, Min int, Max int, Expected tinyint)
-DECLARE @Min int, @Max int; -- asd
+DECLARE @Min int, @Max int;
 
 -- minute tests
 SELECT @Min = 0, @Max = 59	

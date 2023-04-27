@@ -4,7 +4,6 @@
 CREATE OR ALTER PROCEDURE [dbo].[CronWordTests]
 AS
 DECLARE @Tests TABLE (Expression varchar(100), Separator char(1), [Index] int, Expected varchar(100))
--- asd
 
 INSERT @Tests VALUES (NULL, ' ', 0, NULL)
 INSERT @Tests VALUES (NULL, ' ', 1, NULL)
