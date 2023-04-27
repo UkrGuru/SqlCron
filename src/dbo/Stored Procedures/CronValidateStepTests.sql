@@ -53,7 +53,9 @@ INSERT @Tests VALUES ('1/6', 1, @Min, @Max, 1)
 INSERT @Tests VALUES ('1/6', 7, @Min, @Max, 1)
 INSERT @Tests VALUES ('1/7', 8, @Min, @Max, 0)
 
-SELECT Expected, dbo.CronValidateStep(Expression, Value, Min, Max) Actual,
-	Expression + '_' + CAST(Value as varchar) + '_' + CAST(Min as varchar) + '_' + CAST(Max as varchar) Func
-FROM @Tests
-WHERE Expected <> dbo.CronValidateStep(Expression, Value, Min, Max)
+SELECT * FROM (
+	SELECT Expected, dbo.CronValidateStep(Expression, Value, Min, Max) Actual,
+		Expression + '_' + CAST(Value as varchar) + '_' + CAST(Min as varchar) + '_' + CAST(Max as varchar) Func
+	FROM @Tests
+) T
+WHERE ISNULL(Expected, -1) != ISNULL(Actual, -1)

@@ -68,7 +68,6 @@
     <Build Include="dbo\Functions\CronValidatePart.sql" />
     <Build Include="dbo\Functions\CronValidateRange.sql" />
     <Build Include="dbo\Functions\CronValidateStep.sql" />
-    <Build Include="dbo\Functions\CronWord.sql" />
     <Build Include="dbo\Stored Procedures\CronValidateTests.sql" />
     <Build Include="dbo\Stored Procedures\CronValidatePartTests.sql" />
     <Build Include="dbo\Stored Procedures\CronValidateRangeTests.sql" />
@@ -76,6 +75,8 @@
     <None Include="Debug.sql" />
     <Build Include="dbo\Functions\CronWeekDay.sql" />
     <Build Include="dbo\Stored Procedures\CronWeekDayTests.sql" />
+    <Build Include="dbo\Functions\CronWord.sql" />
+    <Build Include="dbo\Stored Procedures\CronWordTests.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Tests.sql" />

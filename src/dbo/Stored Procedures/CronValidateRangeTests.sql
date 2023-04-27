@@ -57,7 +57,9 @@ INSERT @Tests VALUES ('58-1/2', 0, @Min, @Max, 1)
 INSERT @Tests VALUES ('58-1/2', 1, @Min, @Max, 0)
 INSERT @Tests VALUES ('58-1/2', 2, @Min, @Max, 0)
 
-SELECT Expected, dbo.CronValidateRange(Expression, Value, Min, Max) Actual,
-	Expression + '_' + CAST(Value as varchar) + '_' + CAST(Min as varchar) + '_' + CAST(Max as varchar) Func
-FROM @Tests
-WHERE Expected <> dbo.CronValidateRange(Expression, Value, Min, Max)
+SELECT * FROM (
+	SELECT Expected, dbo.CronValidateRange(Expression, Value, Min, Max) Actual,
+		Expression + '_' + CAST(Value as varchar) + '_' + CAST(Min as varchar) + '_' + CAST(Max as varchar) Func
+	FROM @Tests
+) T
+WHERE ISNULL(Expected, -1) != ISNULL(Actual, -1)

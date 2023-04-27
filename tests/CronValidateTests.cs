@@ -1,4 +1,3 @@
-using System.Reflection;
 using UkrGuru.SqlJson;
 using Xunit;
 
@@ -29,27 +28,33 @@ namespace SqlCronTests
         }
 
         [Fact]
-        public void CronValidateTests()
-        {
-            Assert.Equal("", DbHelper.FromProc("CronValidateTests"));
-        }
-
-        [Fact]
         public void CronValidatePartTests()
         {
-            Assert.Equal("", DbHelper.FromProc("CronValidatePartTests"));
+            Assert.Null(DbHelper.Exec<string>("CronValidatePartTests"));
         }
 
         [Fact]
         public void CronValidateRangeTests()
         {
-            Assert.Equal("", DbHelper.FromProc("CronValidateRangeTests"));
+            Assert.Null(DbHelper.Exec<string>("CronValidateRangeTests"));
         }
 
         [Fact]
         public void CronValidateStepTests()
         {
-            Assert.Equal("", DbHelper.FromProc("CronValidateStepTests"));
+            Assert.Null(DbHelper.Exec<string>("CronValidateStepTests"));
+        }
+
+        [Fact]
+        public void CronValidateTests()
+        {
+            Assert.Null(DbHelper.Exec<string>("CronValidateTests"));
+        }
+
+        [Fact]
+        public void CronWordTests()
+        {
+            Assert.Null(DbHelper.Exec<string>("CronWordTests"));
         }
     }
 }

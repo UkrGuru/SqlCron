@@ -122,7 +122,9 @@ INSERT @Tests VALUES ('* * * * 0,1/2', '2021-11-03 00:00:00', 1)
 INSERT @Tests VALUES ('* * * * 0,1/2', '2021-11-04 00:00:00', 0)
 INSERT @Tests VALUES ('* * * * 0,1/2', '2021-11-05 00:00:00', 1)
 
-SELECT Expected, dbo.CronValidate(Expression, Value) Actual,
-	Expression + '_' + CAST(Value as varchar(20)) Func
-FROM @Tests
-WHERE Expected <> dbo.CronValidate(Expression, Value)
+SELECT * FROM (
+	SELECT Expected, dbo.CronValidate(Expression, Value) Actual,
+		Expression + '_' + CAST(Value as varchar(20)) Func
+	FROM @Tests
+) T
+WHERE ISNULL(Expected, -1) != ISNULL(Actual, -1)

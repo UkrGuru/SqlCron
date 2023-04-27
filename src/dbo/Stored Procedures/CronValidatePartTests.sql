@@ -110,7 +110,9 @@ SELECT @Min = 1, @Max = 7
 INSERT @Tests VALUES ('0', 0, @Min, @Max, 0)
 INSERT @Tests VALUES ('8', 8, @Min, @Max, 0)
 
-SELECT Expected, dbo.CronValidatePart(Expression, Value, Min, Max) Actual,
-	Expression + '_' + CAST(Value as varchar) + '_' + CAST(Min as varchar) + '_' + CAST(Max as varchar) Func
-FROM @Tests
-WHERE Expected <> dbo.CronValidatePart(Expression, Value, Min, Max)
+SELECT * FROM (
+	SELECT Expected, dbo.CronValidatePart(Expression, Value, Min, Max) Actual,
+		Expression + '_' + CAST(Value as varchar) + '_' + CAST(Min as varchar) + '_' + CAST(Max as varchar) Func
+	FROM @Tests
+) T
+WHERE ISNULL(Expected, -1) != ISNULL(Actual, -1)
