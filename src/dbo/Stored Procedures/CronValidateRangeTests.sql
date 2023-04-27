@@ -1,10 +1,10 @@
 ﻿-- ==============================================================
 -- Copyright (c) Oleksandr Viktor (UkrGuru). All rights reserved.
 -- ==============================================================
-CREATE PROCEDURE [dbo].[CronValidateRangeTests] 
+CREATE OR ALTER PROCEDURE [dbo].[CronValidateRangeTests] 
 AS
 DECLARE @Tests TABLE (Expression varchar(100), Value int, Min int, Max int, Expected tinyint)
-DECLARE @Min int, @Max int;
+DECLARE @Min int, @Max int; -- asd
 
 -- minute tests
 SELECT @Min = 0, @Max = 59	
@@ -62,4 +62,4 @@ SELECT * FROM (
 		Expression + '_' + CAST(Value as varchar) + '_' + CAST(Min as varchar) + '_' + CAST(Max as varchar) Func
 	FROM @Tests
 ) T
-WHERE ISNULL(Expected, -1) != ISNULL(Actual, -1)
+WHERE ISNULL(Expected, 255) != ISNULL(Actual, 255)

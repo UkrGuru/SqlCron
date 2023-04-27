@@ -1,7 +1,7 @@
 ﻿-- ==============================================================
 -- Copyright (c) Oleksandr Viktor (UkrGuru). All rights reserved.
 -- ==============================================================
-CREATE PROCEDURE [dbo].[CronWeekDayTests] 
+CREATE OR ALTER PROCEDURE [dbo].[CronWeekDayTests] 
 AS
 DECLARE @Now datetime = '2021-11-07'
 

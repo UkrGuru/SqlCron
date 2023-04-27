@@ -1,9 +1,10 @@
 ﻿-- ==============================================================
 -- Copyright (c) Oleksandr Viktor (UkrGuru). All rights reserved.
 -- ==============================================================
-CREATE PROCEDURE [dbo].[CronValidateTests] 
+CREATE OR ALTER PROCEDURE [dbo].[CronValidateTests] 
 AS
 DECLARE @Tests TABLE (Expression varchar(100), Value datetime, Expected tinyint)
+-- asd
 
 -- minute tests
 INSERT @Tests VALUES ('* * * * *', '2022-01-01 00:00:00', 1)
@@ -127,4 +128,4 @@ SELECT * FROM (
 		Expression + '_' + CAST(Value as varchar(20)) Func
 	FROM @Tests
 ) T
-WHERE ISNULL(Expected, -1) != ISNULL(Actual, -1)
+WHERE ISNULL(Expected, 255) != ISNULL(Actual, 255)

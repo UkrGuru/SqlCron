@@ -1,7 +1,7 @@
 ﻿-- ==============================================================
 -- Copyright (c) Oleksandr Viktor (UkrGuru). All rights reserved.
 -- ==============================================================
-CREATE FUNCTION [dbo].[CronValidateStep](@Expression varchar(100), @Value int, @Min int, @Max int)
+CREATE OR ALTER FUNCTION [dbo].[CronValidateStep](@Expression varchar(100), @Value int, @Min int, @Max int)
 RETURNS tinyint
 AS
 BEGIN

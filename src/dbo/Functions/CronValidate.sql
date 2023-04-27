@@ -1,7 +1,7 @@
 ﻿-- ==============================================================
 -- Copyright (c) Oleksandr Viktor (UkrGuru). All rights reserved.
 -- ==============================================================
-CREATE FUNCTION [dbo].[CronValidate] (@Expression varchar(100), @Now datetime)
+CREATE OR ALTER FUNCTION [dbo].[CronValidate] (@Expression varchar(100), @Now datetime)
 RETURNS bit
 AS
 BEGIN
