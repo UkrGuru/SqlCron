@@ -9,7 +9,6 @@ BEGIN
 
     SELECT @i = @i + 1, @v = CASE WHEN @i <= @Index THEN value ELSE @v END   
     FROM STRING_SPLIT(@Expression, @Separator)
-    WHERE LEN(value) > 0
 
     RETURN CASE WHEN @i < @Index THEN NULL ELSE @v END
 END

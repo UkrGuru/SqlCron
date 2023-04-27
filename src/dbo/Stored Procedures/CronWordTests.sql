@@ -9,7 +9,7 @@ INSERT @Tests VALUES (NULL, ' ', 0, NULL)
 INSERT @Tests VALUES (NULL, ' ', 1, NULL)
 
 INSERT @Tests VALUES ('', ' ', 0, NULL)
-INSERT @Tests VALUES ('', ' ', 1, NULL)
+INSERT @Tests VALUES ('', ' ', 1, '')
 
 INSERT @Tests VALUES ('1', NULL, NULL, NULL)
 INSERT @Tests VALUES ('1', NULL, 0, NULL)
