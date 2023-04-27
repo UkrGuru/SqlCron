@@ -1,3 +1,3 @@
 # UkrGuru.SqlCron
 
-![UkrGuru.SqlCron Demo](cron-demo.jpg)
+![UkrGuru.SqlCron Demo](cron-demo1.jpg)
