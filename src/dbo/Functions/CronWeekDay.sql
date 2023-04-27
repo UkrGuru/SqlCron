@@ -1,7 +1,7 @@
 ﻿-- ==============================================================
 -- Copyright (c) Oleksandr Viktor (UkrGuru). All rights reserved.
 -- ==============================================================
-CREATE OR ALTER FUNCTION [dbo].[CronWeekDay](@Now datetime)
+CREATE OR ALTER   FUNCTION [dbo].[CronWeekDay](@Now datetime)
 RETURNS int
 AS
 BEGIN

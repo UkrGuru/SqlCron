@@ -4,10 +4,9 @@
 CREATE OR ALTER PROCEDURE [dbo].[CronValidateTests] 
 AS
 DECLARE @Tests TABLE (Expression varchar(100), Value datetime, Expected tinyint)
--- asd
 
 -- minute tests
-INSERT @Tests VALUES ('* * * * *', '2022-01-01 00:00:00', 1)
+INSERT @Tests VALUES ('* * * * *', '2021-01-01 00:00:00', 1)
 INSERT @Tests VALUES ('0 * * * *', '2021-11-01 00:00:00', 1)
 INSERT @Tests VALUES ('1 * * * *', '2021-11-01 00:01:00', 1)
 

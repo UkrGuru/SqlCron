@@ -1,7 +1,7 @@
 ﻿-- ==============================================================
 -- Copyright (c) Oleksandr Viktor (UkrGuru). All rights reserved.
 -- ==============================================================
-CREATE OR ALTER FUNCTION [dbo].[CronWord](@Expression varchar(100), @Separator char(1) = ' ', @Index int)
+CREATE OR ALTER   FUNCTION [dbo].[CronWord](@Expression varchar(100), @Separator char(1) = ' ', @Index int)
 RETURNS varchar(100)
 AS
 BEGIN

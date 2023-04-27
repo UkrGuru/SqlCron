@@ -1,7 +1,7 @@
 ﻿-- ==============================================================
 -- Copyright (c) Oleksandr Viktor (UkrGuru). All rights reserved.
 -- ==============================================================
-CREATE OR ALTER FUNCTION [dbo].[CronValidateRange](@Expression varchar(100), @Value int, @Min int, @Max int)
+CREATE OR ALTER   FUNCTION [dbo].[CronValidateRange](@Expression varchar(100), @Value int, @Min int, @Max int)
 RETURNS tinyint
 AS
 BEGIN
@@ -42,3 +42,6 @@ BEGIN
    
     RETURN 0
 END
+GO
+
+
