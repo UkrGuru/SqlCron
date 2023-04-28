@@ -1,6 +1,6 @@
 # UkrGuru.SqlCron
 
-UkrGuru.SqlCron is a set of functions for checking cron-expressions in T-SQL.
+UkrGuru.SqlCron is a set of T-SQL Functions for checking cron-expressions.
 
 This feature is used in UkrGuru.WebJobs to schedule and execute tasks. 
 
